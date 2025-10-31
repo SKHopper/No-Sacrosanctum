@@ -23,7 +23,7 @@ public:
 	void openMenu();
 
 	UFUNCTION(BlueprintCallable)
-	void closeMenu();
+	void closeMenu(); 
 
 protected:
 	// Called when the game starts
@@ -34,6 +34,8 @@ protected:
 	UPROPERTY(Editanywhere, BlueprintReadWrite)
 	ApaintActorInterface* paintActor;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FDataTableRowHandle spellPatternData;
 	
 
 public:	
