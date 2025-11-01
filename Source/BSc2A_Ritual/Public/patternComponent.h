@@ -23,19 +23,29 @@ public:
 	void openMenu();
 
 	UFUNCTION(BlueprintCallable)
-	void closeMenu(); 
+	void endMenu();
+
+	UFUNCTION(BlueprintCallable)
+	TArray<int32> closeMenu();
+
+	UFUNCTION(BlueprintCallable)
+	void doSpell(EspellType spell);
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadOnly)
 	ABSc2A_RitualCharacter* player;
 
 	UPROPERTY(Editanywhere, BlueprintReadWrite)
 	ApaintActorInterface* paintActor;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FDataTableRowHandle spellPatternData;
+	UDataTable* spellPatternsTable;
+
+	//UPROPERTY(BlueprintReadOnly)
+	//TMap<FString, EspellType> spellPatterns;
 	
 
 public:	

@@ -16,7 +16,7 @@ enum class EspellType : uint8 {
 };
 
 USTRUCT(BlueprintType)
-struct FspellPattern
+struct FspellPattern : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -26,12 +26,12 @@ public:
     EspellType spellType;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Custom Struct")
-    TArray<int32> pattern;
+    FString pattern;
 
     //default constructor
     FspellPattern(
         EspellType inType = EspellType::null,
-        TArray<int32> inPattern = TArray<int32>()
+        FString inPattern = FString()
     )
         : spellType(inType), pattern(inPattern)
     {}

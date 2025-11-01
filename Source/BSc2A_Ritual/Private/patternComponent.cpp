@@ -36,12 +36,62 @@ void UpatternComponent::openMenu() {
 	paintActor->beginPainting();
 }
 
-void UpatternComponent::closeMenu() {
-	TArray<int32> test = paintActor->endPainting();
-	for (int32 num : test) {
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("'%d'"), num));
+void UpatternComponent::doSpell(EspellType spell) {
+	switch (spell) {
+
+	case EspellType::source:
+		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("SOURCE SPELL")));
+		break;
+
+	case EspellType::leak:
+		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("LEAK SPELL")));
+		break;
+
+	case EspellType::boardUp:
+		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("BOARD SPELL")));
+		break;
+
+	default:
+		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("SOMETHING BROKE")));
 	}
+}
+
+void UpatternComponent::endMenu() {
+	FString pattern;
+
+	TArray<int32> outPattern = closeMenu();
+	for (int32 vertex : outPattern) {
+		pattern.AppendInt(vertex);
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, pattern);
+
+
+	if (spellPatternsTable != nullptr) {
+
+		TArray<FspellPattern*> spellPatterns;
+		spellPatternsTable->GetAllRows<FspellPattern>("", spellPatterns);
+
+		bool validSpell = false;
+		for (FspellPattern* spellPattern : spellPatterns) {
+			if (pattern == spellPattern->pattern) {
+				validSpell = true;
+				doSpell(spellPattern->spellType);
+				break;
+			}
+		}
+
+		if (not validSpell) {
+			GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("NO SPELL")));
+		}
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("table is null"));
+	}
+}
+
+TArray<int32> UpatternComponent::closeMenu() {
+	TArray<int32> outPattern = paintActor->endPainting();
+	return outPattern;
 }
 
 

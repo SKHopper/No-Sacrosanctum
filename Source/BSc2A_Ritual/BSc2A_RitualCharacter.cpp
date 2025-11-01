@@ -52,23 +52,6 @@ ABSc2A_RitualCharacter::ABSc2A_RitualCharacter()
 void ABSc2A_RitualCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	EspellType spellType = EspellType::null;
-	Fspell testSpell(spellType);
-
-	switch (testSpell.type) {
-
-	case EspellType(0):
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("ENUMERATION!!!")));
-		break;
-
-	case EspellType::source:
-		break;
-
-	default:
-		break;
-	}
 }
 
 void ABSc2A_RitualCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -103,7 +86,7 @@ void ABSc2A_RitualCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void ABSc2A_RitualCharacter::toggleSpellMenu() {
 	if (inSpellMenu) {
 		inSpellMenu = false;
-		patternComp->closeMenu();
+		patternComp->endMenu();
 	}
 	else {
 		inSpellMenu = true;
