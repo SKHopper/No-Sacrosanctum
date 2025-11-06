@@ -22,6 +22,8 @@ UpatternComponent::UpatternComponent()
 void UpatternComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	spellIDs = spellPatternsTable->GetRowNames();
 }
 
 void UpatternComponent::openMenu() {
@@ -68,11 +70,11 @@ void UpatternComponent::endMenu() {
 
 	if (spellPatternsTable != nullptr) {
 
-		TArray<FspellPattern*> spellPatterns;
-		spellPatternsTable->GetAllRows<FspellPattern>("", spellPatterns);
-
 		bool validSpell = false;
-		for (FspellPattern* spellPattern : spellPatterns) {
+		FspellPattern* spellPattern;
+		for (FName spellID : spellIDs) {
+
+			spellPattern = spellPatternsTable->FindRow<FspellPattern>(spellID, "");
 			if (pattern == spellPattern->pattern) {
 				validSpell = true;
 				doSpell(spellPattern->spellType);

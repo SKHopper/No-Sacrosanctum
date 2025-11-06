@@ -46,6 +46,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UDataTable* spellPatternsTable;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FName> spellIDs;
 	
 
 public:	
