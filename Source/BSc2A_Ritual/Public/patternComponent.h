@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void doSpell(EspellType spell);
 
+	UFUNCTION(BlueprintCallable)
+	void initialize(ABSc2A_RitualCharacter* inPlayer);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -43,9 +46,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UDataTable* spellPatternsTable;
-
-	//UPROPERTY(BlueprintReadOnly)
-	//TMap<FString, EspellType> spellPatterns;
 	
 
 public:	

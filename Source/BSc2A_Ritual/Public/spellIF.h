@@ -8,7 +8,8 @@
 #include "spellIF.generated.h"
 
 UENUM(BlueprintType)
-enum class EspellType : uint8 {
+enum class EspellType : uint8 
+{
     null UMETA(DisplayName = "Null"),
 	source UMETA(DisplayName = "Source"),
 	leak UMETA(DisplayName = "Leak"),
@@ -28,7 +29,6 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Custom Struct")
     FString pattern;
 
-    //default constructor
     FspellPattern(
         EspellType inType = EspellType::null,
         FString inPattern = FString()

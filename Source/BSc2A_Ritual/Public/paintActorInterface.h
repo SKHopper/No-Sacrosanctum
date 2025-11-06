@@ -7,6 +7,8 @@
 #include "spellIF.h"
 #include "paintActorInterface.generated.h"
 
+class AspellProjectile;
+
 UCLASS()
 class BSC2A_RITUAL_API ApaintActorInterface : public AActor
 {
@@ -24,15 +26,38 @@ public:
 	//unoverrided
 	virtual TArray<int32> getPattern_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Data")
+	void doSpellSprite(EspellType type);
+	//unoverrided
+	virtual void doSpellSprite_Implementation(EspellType type);
+
 	UFUNCTION()
 	TArray<int32> endPainting();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void stopPainting();
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void initializeBP();
+
+	UFUNCTION(BlueprintCallable)
+	void initialize(AActor* inPlayer);
+
+	UFUNCTION(BlueprintCallable)
+	void setPlayer(AActor* inPlayer);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	AActor* player;
+
+	UPROPERTY(BlueprintReadOnly)
+	AspellProjectile* spellProjectile;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AspellProjectile> BP_spellClass;
 
 public:	
 	// Called every frame

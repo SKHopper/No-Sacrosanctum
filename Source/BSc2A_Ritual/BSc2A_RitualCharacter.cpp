@@ -52,6 +52,8 @@ ABSc2A_RitualCharacter::ABSc2A_RitualCharacter()
 void ABSc2A_RitualCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	patternComp->initialize(this);
 }
 
 void ABSc2A_RitualCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

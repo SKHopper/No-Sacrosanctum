@@ -14,12 +14,7 @@ UpatternComponent::UpatternComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 	paintActor = CreateDefaultSubobject<ApaintActorInterface>("Paint Actor");
-	UWorld* world = GetWorld();
-	if (world) {
-		player = Cast<ABSc2A_RitualCharacter>(UGameplayStatics::GetPlayerCharacter(world, 0));
-	}
 }
 
 
@@ -27,9 +22,6 @@ UpatternComponent::UpatternComponent()
 void UpatternComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 void UpatternComponent::openMenu() {
@@ -37,6 +29,7 @@ void UpatternComponent::openMenu() {
 }
 
 void UpatternComponent::doSpell(EspellType spell) {
+
 	switch (spell) {
 
 	case EspellType::source:
@@ -52,8 +45,15 @@ void UpatternComponent::doSpell(EspellType spell) {
 		break;
 
 	default:
-		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("SOMETHING BROKE")));
+		return;
 	}
+
+	paintActor->doSpellSprite(spell);
+}
+
+void UpatternComponent::initialize(ABSc2A_RitualCharacter* inPlayer) {
+	player = inPlayer;
+	paintActor->initialize(Cast<AActor>(player));
 }
 
 void UpatternComponent::endMenu() {
