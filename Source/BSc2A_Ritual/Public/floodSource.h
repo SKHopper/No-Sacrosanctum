@@ -36,24 +36,29 @@ public:
 
 protected:
 
+	//earliest this source can re(start)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double minBeginTime = 5;
-
+	//latestest this source can re(start)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double maxBeginTime = 40;
 
+	//for queueing next source start
 	UPROPERTY()
 	FTimerHandle beginTimer;
-
+	//set timer to begin source
 	UFUNCTION(BlueprintCallable)
 	void queueRandomBegin();
 
+	//player visible object
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* collider;
-
+	//for interact trace
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* mesh;
 
+	//Are we leaking into our body
+	UPROPERTY()
 	bool isLeaking = false;
 
 	//leak rate (height per second)

@@ -19,18 +19,22 @@ public:
 	// Sets default values for this component's properties
 	UpatternComponent();
 
+	//open paintActor menu
 	UFUNCTION(BlueprintCallable)
 	void openMenu();
-
+	//closeMenu() and handle any spell-doing
 	UFUNCTION(BlueprintCallable)
-	void endMenu();
+	void endSpellcasting();
 
+	//close paint actor menu and return its current pattern
 	UFUNCTION(BlueprintCallable)
 	TArray<int32> closeMenu();
 
+	//call spell sprite to launch with correct data
 	UFUNCTION(BlueprintCallable)
 	void doSpell(EspellType spell);
 
+	//save player and pass to paint actor
 	UFUNCTION(BlueprintCallable)
 	void initialize(ABSc2A_RitualCharacter* inPlayer);
 
@@ -41,12 +45,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ABSc2A_RitualCharacter* player;
 
+	//spellcasting menu
 	UPROPERTY(Editanywhere, BlueprintReadWrite)
 	ApaintActorInterface* paintActor;
 
+	//FspellPattern spell types and their array of pattern vertex indices
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UDataTable* spellPatternsTable;
-
+	//spellPatternsTable row names
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FName> spellIDs;
 	

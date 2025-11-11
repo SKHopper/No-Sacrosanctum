@@ -29,31 +29,35 @@ public:
 
 protected:
 
+	//stop this leaking, queue next
 	UFUNCTION(BlueprintCallable)
 	void endLeak();
 
+	//player visible object
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* mesh;
-
+	//for interact trace
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* collider;
 
+	//earliest this leak can (re)start
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double minBeginTime = 5;
-
+	//latestest this leak can (re)start
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double maxBeginTime = 120;
 
+	//for queueing next leak start
+	UPROPERTY()
 	FTimerHandle beginTimer;
-
+	//set timer to begin leak
 	UFUNCTION(BlueprintCallable)
 	void queueRandomBegin();
 
-	//
+	//randomization guardrail
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double minSpawnHeight = 30;
-
-	//
+	//randomization guardrail
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double maxSpawnHeight = 170;
 
@@ -61,12 +65,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	//remove this leak effect from specified floodBody's
+	UFUNCTION()
 	void stopLeak(int bodyIndex);
 
 	//apply liquid flow from heigher body into lower
+	UFUNCTION()
 	void setOneWay(int bodyIndex, TArray<double>& bodyHeights);
 
 	//time in seconds until bodies will be level
+	UFUNCTION()
 	double predictUnlevelTime(TArray<double>& bodyHeights);
 
 	//leak rate (height per second)
@@ -89,6 +96,7 @@ protected:
 	TArray<IfloodIF*> parentBodies;
 
 	//the current rates of leakage inwards (-rate out, 0, rate in) to each body from this Leak
+	UPROPERTY(BlueprintReadOnly)
 	TArray<double> bodyLeakRates = { 0, 0 };
 
 	//check bodies' conditions and update flow of liquid accordingly
@@ -101,19 +109,23 @@ protected:
 	//call on leak creation, after body initialization
 	void beginLeaking();
 
-	//
+	//threshold at which comparitively similar bodies are simply equalized
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double levelizeBodiesThreshold = 1;
 
 	FTimerHandle updateTimer;
 
 	//should not be updated currently
+	UPROPERTY()
 	bool isUpdating = true;
-	//
+	//can not update till next time
+	UPROPERTY()
 	bool hasUpdatedThisTick = false;
-	//
+	//is leaking from A body into B, should be used to determine the opposite as well
+	UPROPERTY()
 	bool isLeakingAlt = false;
-	//
+	//is leaking from any body into the other
+	UPROPERTY()
 	bool isLeaking = false;
 
 	virtual void interact(bool alternate);

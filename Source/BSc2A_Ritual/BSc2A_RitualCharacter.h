@@ -41,14 +41,15 @@ class ABSc2A_RitualCharacter : public ACharacter, public IspellIF
 
 protected:
 
-	//
+	//are we currently casting spells
 	UPROPERTY(EditAnywhere, Category = "spellcasting")
 	bool inSpellMenu = false;
 
-	//
+	//input for toggling spell menu
 	UPROPERTY(EditAnywhere, Category = "spellcasting")
 	UInputAction* spellMenuAction;
 
+	//bring up spell menu or handle closing it (via pattern comp)
 	UFUNCTION(BlueprintCallable, Category = "spellcasting")
 	void toggleSpellMenu();
 
@@ -70,15 +71,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	class UInputAction* MouseLookAction;
 
-	//
+	//interact input normal i.e. LMB
 	UPROPERTY(EditAnywhere, Category = "customInput")
 	UInputAction* interactAction;
-
-	//
+	//interact input alternative i.e. RMB
 	UPROPERTY(EditAnywhere, Category = "customInput")
 	UInputAction* altInteractAction;
 
-	//
+	//interact forwardV line trace length
 	UPROPERTY(EditAnywhere, Category = "customInput")
 	double interactTraceLength = 260;
 	
@@ -111,15 +111,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
 
-	//
+	//for bind on interact normal input
 	UFUNCTION(BlueprintCallable, Category = "customInput")
 	void doInteract();
-
-	//
+	//for bind on interact alternative input
 	UFUNCTION(BlueprintCallable, Category = "customInput")
 	void doAltInteract();
 
-	//
+	//send interact IF by line trace
 	void tryInteract(bool alt);
 
 protected:

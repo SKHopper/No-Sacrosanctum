@@ -58,7 +58,7 @@ void UpatternComponent::initialize(ABSc2A_RitualCharacter* inPlayer) {
 	paintActor->initialize(Cast<AActor>(player));
 }
 
-void UpatternComponent::endMenu() {
+void UpatternComponent::endSpellcasting() {
 	FString pattern;
 
 	TArray<int32> outPattern = closeMenu();
