@@ -78,6 +78,8 @@ class BSC2A_RITUAL_API IspellIF
 {
 	GENERATED_BODY()
 
+    virtual bool trySpell(EspellType key) { return false; };
+
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	

@@ -30,10 +30,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<int32> closeMenu();
 
-	//call spell sprite to launch with correct data
-	UFUNCTION(BlueprintCallable)
-	void doSpell(EspellType spell);
-
 	//save player and pass to paint actor
 	UFUNCTION(BlueprintCallable)
 	void initialize(ABSc2A_RitualCharacter* inPlayer);

@@ -42,11 +42,11 @@ class ABSc2A_RitualCharacter : public ACharacter, public IspellIF
 protected:
 
 	//are we currently casting spells
-	UPROPERTY(EditAnywhere, Category = "spellcasting")
+	UPROPERTY(BlueprintReadOnly, Category = "spellcasting")
 	bool inSpellMenu = false;
 
 	//input for toggling spell menu
-	UPROPERTY(EditAnywhere, Category = "spellcasting")
+	UPROPERTY(EditDefaultsOnly, Category = "spellcasting")
 	UInputAction* spellMenuAction;
 
 	//bring up spell menu or handle closing it (via pattern comp)

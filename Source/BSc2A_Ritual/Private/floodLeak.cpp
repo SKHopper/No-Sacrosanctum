@@ -7,6 +7,8 @@
 // Sets default values
 AfloodLeak::AfloodLeak()
 {
+	spellType = EspellType::leak;
+
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -190,7 +192,7 @@ void AfloodLeak::suggestLeakUpdate() {
 	isUpdating = false;
 }
 
-void AfloodLeak::interact(bool alternate) {
+void AfloodLeak::getSpelled() {
 
 	if (canLeak) {
 		endLeak();

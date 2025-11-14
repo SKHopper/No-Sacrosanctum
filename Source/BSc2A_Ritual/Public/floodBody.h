@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "spellable.h"
 #include "floodIF.h"
 #include "floodBody.generated.h"
 
@@ -20,7 +21,9 @@ UCLASS()
  * One per room
  *
  */
-class BSC2A_RITUAL_API AfloodBody : public AActor, public IfloodIF
+class BSC2A_RITUAL_API AfloodBody : 
+	public AActor, 
+	public IfloodIF
 {
 	GENERATED_BODY()
 	

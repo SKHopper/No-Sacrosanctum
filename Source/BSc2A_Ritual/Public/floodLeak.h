@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "floodIF.h"
-#include "interactionIF.h"
+#include "spellable.h"
+//#include "interactionIF.h"
 #include "floodLeak.generated.h"
 
 class UBoxComponent;
@@ -19,7 +20,11 @@ UCLASS()
  * 
  *
  */
-class BSC2A_RITUAL_API AfloodLeak : public AActor, public IfloodIF, public IinteractionIF
+class BSC2A_RITUAL_API AfloodLeak : 
+	public Aspellable, 
+	//public IinteractionIF, 
+	public IfloodIF
+
 {
 	GENERATED_BODY()
 	
@@ -128,7 +133,10 @@ protected:
 	UPROPERTY()
 	bool isLeaking = false;
 
-	virtual void interact(bool alternate);
+	//stop leak
+	virtual void getSpelled();
+
+	//virtual void interact(bool alternate);
 
 public:	
 	// Called every frame

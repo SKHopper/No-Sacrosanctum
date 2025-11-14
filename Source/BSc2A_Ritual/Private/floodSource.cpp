@@ -7,6 +7,8 @@
 // Sets default values
 AfloodSource::AfloodSource()
 {
+	spellType = EspellType::source;
+
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -65,10 +67,11 @@ void AfloodSource::endLeak() {
 	queueRandomBegin();
 }
 
-void AfloodSource::interact(bool alternate) {//GEngine->AddOnScreenDebugMessage(1337, 1, FColor::White, OnScreenString);
+void AfloodSource::getSpelled() {
 
 	if (isLeaking) {
 		endLeak();
+		GEngine->AddOnScreenDebugMessage(1337, 1, FColor::White, FString("Wah"));
 	}
 }
 

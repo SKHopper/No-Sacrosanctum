@@ -30,29 +30,6 @@ void UpatternComponent::openMenu() {
 	paintActor->beginPainting();
 }
 
-void UpatternComponent::doSpell(EspellType spell) {
-
-	switch (spell) {
-
-	case EspellType::source:
-		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("SOURCE SPELL")));
-		break;
-
-	case EspellType::leak:
-		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("LEAK SPELL")));
-		break;
-
-	case EspellType::boardUp:
-		GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("BOARD SPELL")));
-		break;
-
-	default:
-		return;
-	}
-
-	paintActor->doSpellSprite(spell);
-}
-
 void UpatternComponent::initialize(ABSc2A_RitualCharacter* inPlayer) {
 	player = inPlayer;
 	paintActor->initialize(Cast<AActor>(player));
@@ -65,9 +42,8 @@ void UpatternComponent::endSpellcasting() {
 	for (int32 vertex : outPattern) {
 		pattern.AppendInt(vertex);
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, pattern);
 
-
+	//TODO: check if nullptr is falsy
 	if (spellPatternsTable != nullptr) {
 
 		bool validSpell = false;
@@ -77,13 +53,9 @@ void UpatternComponent::endSpellcasting() {
 			spellPattern = spellPatternsTable->FindRow<FspellPattern>(spellID, "");
 			if (pattern == spellPattern->pattern) {
 				validSpell = true;
-				doSpell(spellPattern->spellType);
+				paintActor->doSpellSprite(spellPattern->spellType);
 				break;
 			}
-		}
-
-		if (not validSpell) {
-			GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Yellow, FString::Printf(TEXT("NO SPELL")));
 		}
 	}
 	else {

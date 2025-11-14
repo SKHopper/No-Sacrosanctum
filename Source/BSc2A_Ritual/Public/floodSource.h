@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "floodIF.h"
-#include "interactionIF.h"
+#include "spellable.h"
+//#include "interactionIF.h"
 #include "floodSource.generated.h"
 
 class UBoxComponent;
@@ -18,7 +19,10 @@ UCLASS()
  * Provides constant fast source of liquid height to body
  *
  */
-class BSC2A_RITUAL_API AfloodSource : public AActor, public IfloodIF, public IinteractionIF
+class BSC2A_RITUAL_API AfloodSource : 
+	public Aspellable, 
+	//public IinteractionIF, 
+	public IfloodIF
 {
 	GENERATED_BODY()
 	
@@ -80,7 +84,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void endLeak();
 
-	UFUNCTION()
-	virtual void interact(bool alternate);
+	//stop leak
+	virtual void getSpelled();
 
 };
