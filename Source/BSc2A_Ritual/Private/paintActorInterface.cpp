@@ -17,6 +17,8 @@ TArray<int32> ApaintActorInterface::getPattern_Implementation() {
 
 void ApaintActorInterface::doSpellSprite_Implementation(EspellType type) {}
 
+void ApaintActorInterface::startLaunchSpell_Implementation(FVector direction) {}
+
 TArray<int32> ApaintActorInterface::endPainting()
 {
 	stopPainting();
@@ -26,6 +28,14 @@ TArray<int32> ApaintActorInterface::endPainting()
 
 void ApaintActorInterface::setPlayer(AActor* inPlayer) {
 	player = inPlayer;
+}
+
+bool ApaintActorInterface::getSpellSpriteActive() {
+	return spellSpriteActive;
+}
+
+bool ApaintActorInterface::getSpellSpriteIdle() {
+	return spellSpriteIdle;
 }
 
 void ApaintActorInterface::initialize(AActor* inPlayer) {

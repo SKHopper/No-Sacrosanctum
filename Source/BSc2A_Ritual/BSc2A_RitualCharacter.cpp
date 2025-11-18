@@ -86,14 +86,7 @@ void ABSc2A_RitualCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 }
 
 void ABSc2A_RitualCharacter::toggleSpellMenu() {
-	if (inSpellMenu) {
-		inSpellMenu = false;
-		patternComp->endSpellcasting();
-	}
-	else {
-		inSpellMenu = true;
-		patternComp->openMenu();
-	}
+	inSpellMenu = patternComp->toggleSpell();
 }
 
 

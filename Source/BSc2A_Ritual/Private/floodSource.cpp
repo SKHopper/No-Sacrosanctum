@@ -71,7 +71,6 @@ void AfloodSource::getSpelled() {
 
 	if (isLeaking) {
 		endLeak();
-		GEngine->AddOnScreenDebugMessage(1337, 1, FColor::White, FString("Wah"));
 	}
 }
 

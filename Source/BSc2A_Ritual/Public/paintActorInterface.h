@@ -34,6 +34,12 @@ public:
 	//unoverrided
 	virtual void doSpellSprite_Implementation(EspellType type);
 
+	//
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Data")
+	void startLaunchSpell(FVector direction);
+	//unoverrided
+	virtual void startLaunchSpell_Implementation(FVector direction);
+
 	//stop painting and return getPattern
 	UFUNCTION()
 	TArray<int32> endPainting();
@@ -53,6 +59,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void setPlayer(AActor* inPlayer);
 
+	UFUNCTION()
+	bool getSpellSpriteActive();
+
+	UFUNCTION()
+	bool getSpellSpriteIdle();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -65,6 +77,12 @@ protected:
 	AspellProjectile* spellProjectile;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AspellProjectile> BP_spellClass;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool spellSpriteActive;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool spellSpriteIdle;
 
 public:	
 	// Called every frame

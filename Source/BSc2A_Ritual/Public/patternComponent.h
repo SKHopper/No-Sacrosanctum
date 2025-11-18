@@ -19,12 +19,12 @@ public:
 	// Sets default values for this component's properties
 	UpatternComponent();
 
-	//open paintActor menu
-	UFUNCTION(BlueprintCallable)
-	void openMenu();
 	//closeMenu() and handle any spell-doing
 	UFUNCTION(BlueprintCallable)
 	void endSpellcasting();
+
+	UFUNCTION()
+	bool toggleSpell();
 
 	//close paint actor menu and return its current pattern
 	UFUNCTION(BlueprintCallable)
@@ -51,7 +51,10 @@ protected:
 	//spellPatternsTable row names
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FName> spellIDs;
-	
+
+	UPROPERTY()
+	bool inMenu;
+
 
 public:	
 	// Called every frame

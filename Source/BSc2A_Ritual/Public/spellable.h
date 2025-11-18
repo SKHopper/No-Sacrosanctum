@@ -23,7 +23,6 @@ public:
 	// Sets default values for this actor's properties
 	Aspellable();
 
-	//
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EspellType getSpellType(); 
 
