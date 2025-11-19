@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "floodIF.h"
 #include "spellable.h"
-//#include "interactionIF.h"
 #include "floodLeak.generated.h"
 
 class UBoxComponent;
