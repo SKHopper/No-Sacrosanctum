@@ -37,5 +37,9 @@ public:
 	virtual void conveyLeakActor(AActor* leak, double height) {};
 	//recieved by floodLeaks
 	virtual void suggestLeakUpdate() {};
+	//recieved by floodBoards from floodBodies
+	virtual void bodyFilled() {};
+	//sent from floodWorldGameState for event reporting
+	virtual void conveyGameState(IfloodIF* gameStateIF) {};
 
 };

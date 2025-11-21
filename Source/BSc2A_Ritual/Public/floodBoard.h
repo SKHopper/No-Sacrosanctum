@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "spellable.h"
+#include "floodIF.h"
 #include "floodBoard.generated.h"
 
 class UBoxComponent;
 
 UCLASS()
-class BSC2A_RITUAL_API AfloodBoard : public Aspellable
+class BSC2A_RITUAL_API AfloodBoard : public Aspellable, public IfloodIF
 {
 	GENERATED_BODY()
 	
@@ -37,6 +38,16 @@ protected:
 	//visible when boarded up
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* mesh;
+
+	UPROPERTY(BlueprintReadOnly)
+	USceneComponent* root;
+
+	//for report overflow
+	IfloodIF* gameState;
+	virtual void conveyGameState(IfloodIF* gameStateIF);
+
+	//overflow loss condition
+	virtual void bodyFilled();
 
 	//become material to board up
 	virtual void getSpelled();

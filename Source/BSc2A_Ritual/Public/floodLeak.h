@@ -68,9 +68,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//remove this leak effect from specified floodBody's
+	//change individual rate and rate tracker
 	UFUNCTION()
-	void stopLeak(int bodyIndex);
+	void changeLeak(double index, double delta);
 
 	//apply liquid flow from heigher body into lower
 	UFUNCTION()
@@ -79,6 +79,14 @@ protected:
 	//time in seconds until bodies will be level
 	UFUNCTION()
 	double predictUnlevelTime(TArray<double>& bodyHeights);
+
+	//true if heights both below leak or equal
+	UFUNCTION()
+	bool noNeedForLeakage(TArray<double>& bodyHeights);
+
+	//call if noNeedForLeakage
+	UFUNCTION()
+	void setNoLeak();
 
 	//leak rate (height per second)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

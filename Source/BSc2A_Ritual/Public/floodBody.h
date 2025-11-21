@@ -43,9 +43,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* bodyCollider;
 
-	//visible fluid material
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UMaterial* meshMaterial1;
+	//to be casted to floodIF
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	AActor* boardActor;
+	//board to stop this body flooding into main space
+	IfloodIF* board;
 
 	//amount room has flooded    none->max
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -59,6 +61,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double leakRateTotal;
 
+	//have we filled to max height
+	UPROPERTY()
+	bool atMax;
+
+
 	//location of this body at BeginPlay
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector startLocation;
@@ -70,6 +77,14 @@ protected:
 	//how high has this body flooded
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	double getHeight();
+
+	//move this body's height
+	UFUNCTION()
+	void updateBody(float deltaTime);
+
+	//tell our leaks 
+	UFUNCTION()
+	void suggestLeaks();
 
 	//called every tick, changes height by leakRateTotal
 	void updateFloodLevel(float DeltaTime);

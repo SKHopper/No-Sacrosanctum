@@ -11,13 +11,11 @@ AfloodBody::AfloodBody()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
 	bodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body Mesh"));
 	bodyMesh->SetupAttachment(RootComponent);
 	
 	bodyCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Body Collider"));
 	bodyCollider->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -26,6 +24,10 @@ void AfloodBody::BeginPlay()
 	Super::BeginPlay();
 
 	startLocation = GetActorLocation();
+	board = Cast<IfloodIF>(boardActor);
+	if (boardActor)GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("1"));
+	if (board)GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("2"));
+
 	
 }
 
@@ -37,14 +39,17 @@ double AfloodBody::getHeight() {
 	return floodHeight;
 }
 
-void AfloodBody::updateFloodLevel(float DeltaTime) {
+void AfloodBody::updateBody(float deltaTime) {
 
 	FVector newLocation = startLocation;
 	double newZ = GetActorLocation().Z;
-	newZ = FMath::Clamp(newZ + leakRateTotal * DeltaTime, startLocation.Z, startLocation.Z + maxHeight);
+	newZ = FMath::Clamp(newZ + leakRateTotal * deltaTime, startLocation.Z, startLocation.Z + maxHeight);
 	floodHeight = newZ - startLocation.Z;
 	newLocation.Z = newZ;
 	SetActorLocation(newLocation);
+}
+
+void AfloodBody::suggestLeaks() {
 
 	TArray<double> heights;
 	heightLeaks.GetKeys(heights);
@@ -55,17 +60,23 @@ void AfloodBody::updateFloodLevel(float DeltaTime) {
 				leak->suggestLeakUpdate();
 			}
 		}
-		
+
+	}
+}
+
+void AfloodBody::updateFloodLevel(float deltaTime) {
+
+	if (leakRateTotal) {
+
+		updateBody(deltaTime);
+		suggestLeaks();
 	}
 
-	/*
-	* 
-	* TODO:
-	* 
-	* if height changes between states of [zero, middling, maximum]:
-	* suggest leak updates
-	* 
-	*/
+	if (floodHeight == maxHeight) {
+
+		board->bodyFilled();
+		atMax = true;
+	}
 }
 
 // Called every frame
@@ -73,7 +84,7 @@ void AfloodBody::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (leakRateTotal) {
+	if (leakRateTotal and not atMax) {
 
 		updateFloodLevel(DeltaTime);
 
@@ -84,17 +95,18 @@ void AfloodBody::Tick(float DeltaTime)
 void AfloodBody::changeLeakRate(double change) {
 
 	leakRateTotal += change;
-
-	UE_LOG(LogTemp, Warning, TEXT("%s: RATE to %f, CHANGE of %f"), *GetNameSafe(this), leakRateTotal, change);
-
+	leakRateTotal += change;
+	//UE_LOG(LogTemp, Warning, TEXT("%s: RATE to %f, CHANGE of %f"), *GetNameSafe(this), leakRateTotal, change);
 	for (IfloodIF* leak : leaks) {
 		leak->suggestLeakUpdate();
 	}
 }
 
 void AfloodBody::conveyLeakActor(AActor* leak, double leakHeight) {
+
 	IfloodIF* castedLeak = Cast<IfloodIF>(leak);
 	leaks.Add(castedLeak);
+
 	if (heightLeaks.Contains(leakHeight)) {
 		heightLeaks.Find(leakHeight)->Add(castedLeak);
 	}

@@ -59,32 +59,36 @@ void AfloodLeak::BeginPlay()
 		queueRandomBegin();
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("floodLeak '%s' has no parentBodies"), *GetNameSafe(this));
+		//UE_LOG(LogTemp, Warning, TEXT("floodLeak '%s' has no parentBodies"), *GetNameSafe(this));
 	}
 
 }
 
-void AfloodLeak::stopLeak(int bodyIndex) {
-	UE_LOG(LogTemp, Warning, TEXT("STOPPING LEAK"));
+void AfloodLeak::changeLeak(double index, double delta) {
+	parentBodies[index]->changeLeakRate(delta);
+	bodyLeakRates[index] = bodyLeakRates[index] + delta;
+}
+
+void AfloodLeak::setNoLeak() {
+	//UE_LOG(LogTemp, Warning, TEXT("setting no leak"));
 	isLeaking = false;
-	parentBodies[bodyIndex]->changeLeakRate(-bodyLeakRates[bodyIndex]);
-	bodyLeakRates[bodyIndex] = 0;
+	changeLeak(0, -bodyLeakRates[0]);
+	changeLeak(1, -bodyLeakRates[1]);
 }
 
 void AfloodLeak::setOneWay(int bodyIndex, TArray<double>& bodyHeights) {
-	UE_LOG(LogTemp, Warning, TEXT("setting one way leak"), bodyHeights[0], bodyHeights[1]);
-	
+
+	isLeakingAlt = bool(bodyIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("setting one way leak"), bodyHeights[0], bodyHeights[1]);
 	isLeaking = true;
 
 	int altIndex = 1 - bodyIndex;
 		
-	//set leaking higher body leak rate relative zero, set leaking higher body leak rate to negative leak rate
-	parentBodies[bodyIndex]->changeLeakRate(-bodyLeakRates[bodyIndex] - leakRate);
-	//update documentation
-	bodyLeakRates[bodyIndex] = -leakRate;
+	setNoLeak();
 
-	parentBodies[altIndex]->changeLeakRate(-bodyLeakRates[altIndex] + leakRate);
-	bodyLeakRates[altIndex] = leakRate;
+	//set leaking higher body leak rate to negative leak rate
+	changeLeak(bodyIndex, -leakRate);
+	changeLeak(altIndex, leakRate);
 }
 
 /*
@@ -114,67 +118,55 @@ double AfloodLeak::predictUnlevelTime(TArray<double>& bodyHeights) {
 	return (c2 - c1) / (m1 - m2);
 }
 
+bool AfloodLeak::noNeedForLeakage(TArray<double>& bodyHeights) {
+	return 
+		abs(bodyHeights[0] - bodyHeights[1]) < levelizeBodiesThreshold 
+		or not (bodyHeights[0] > leakHeight or bodyHeights[1] > leakHeight);
+}
+
 void AfloodLeak::updateLeak() {
 
-	//TODO: simplify below
+	if (not canLeak) {
+		setNoLeak();
+		return;
+	}
 
-	if (canLeak) {
+	if (not hasUpdatedThisTick) {
 
-		if (not hasUpdatedThisTick) {
-			hasUpdatedThisTick = true;
+		hasUpdatedThisTick = true;
+		TArray<double> bodyHeights = { parentBodies[0]->getBodyHeight(), parentBodies[1]->getBodyHeight() };
 
-			TArray<double> bodyHeights = { parentBodies[0]->getBodyHeight(), parentBodies[1]->getBodyHeight() };
+		//TODO: levelize extremely similar heights with exactly similar rates
+		//UE_LOG(LogTemp, Warning, TEXT("height A %f, height B %f"), bodyHeights[0], bodyHeights[1]);
 
-			//TODO: levelize extremely similar heights with exactly similar rates
-
-			UE_LOG(LogTemp, Warning, TEXT("height A %f, height B %f"), bodyHeights[0], bodyHeights[1]);
-
-			
-			if (
-				abs(bodyHeights[0] - bodyHeights[1]) < levelizeBodiesThreshold 
-				or not (
-					bodyHeights[0] > leakHeight 
-					or bodyHeights[1] > leakHeight
-				)
-			) {
-				UE_LOG(LogTemp, Warning, TEXT("setting no leak"));
-				isLeaking = false;
-				parentBodies[0]->changeLeakRate(-bodyLeakRates[0]);
-				parentBodies[1]->changeLeakRate(-bodyLeakRates[1]);
-				bodyLeakRates = { 0, 0 };
-			}
-			else if (bodyHeights[0] > bodyHeights[1]) { //"Normal" flow direction
-
-				if (not isLeaking or (isLeaking and isLeakingAlt)) {
-					setOneWay(0, bodyHeights);
-					isLeakingAlt = false;
-				}
-			}
-			else if (bodyHeights[0] < bodyHeights[1]) { //"Alt" flow direction
-
-				if (not isLeaking or (isLeaking and not isLeakingAlt)) {
-					setOneWay(1, bodyHeights);
-					isLeakingAlt = true;
-				}
-			}
-
-			/*
-			GetWorld()->GetTimerManager().SetTimer(
-				updateTimer,
-				this,
-				&AfloodLeak::updateLeak,
-				predictUnlevelTime(bodyHeights),
-				false
-			);
-			*/
+		if (noNeedForLeakage(bodyHeights)) {
+			setNoLeak();
 		}
-		
-	}
-	else {
-		stopLeak(0);
-		stopLeak(1);
-	}
+		else if (
+			bodyHeights[0] > bodyHeights[1]//should be "normal" flow
+			and
+			(not isLeaking or (isLeaking and isLeakingAlt))//is not "normal" flow
+		) {
+			setOneWay(0, bodyHeights);
+		}
+		else if (
+			bodyHeights[0] < bodyHeights[1]//should be "alt" flow
+			and
+			(not isLeaking or (isLeaking and not isLeakingAlt))//should be "alt" flow
+		) {
+			setOneWay(1, bodyHeights);
+		}
 
+		/*
+		GetWorld()->GetTimerManager().SetTimer(
+			updateTimer,
+			this,
+			&AfloodLeak::updateLeak,
+			predictUnlevelTime(bodyHeights),
+			false
+		);
+		*/
+	}
 }
 
 // Called every frame

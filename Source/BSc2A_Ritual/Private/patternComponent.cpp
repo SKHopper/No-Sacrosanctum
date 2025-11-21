@@ -32,8 +32,6 @@ void UpatternComponent::initialize(ABSc2A_RitualCharacter* inPlayer) {
 }
 
 void UpatternComponent::endSpellcasting() {
-
-
 	FString pattern;
 
 	TArray<int32> outPattern = closeMenu();
@@ -41,7 +39,6 @@ void UpatternComponent::endSpellcasting() {
 		pattern.AppendInt(vertex);
 	}
 
-	//TODO: check if nullptr is falsy
 	if (spellPatternsTable != nullptr) {
 
 		bool validSpell = false;
