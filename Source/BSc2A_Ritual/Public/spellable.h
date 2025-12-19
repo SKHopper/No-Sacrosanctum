@@ -40,6 +40,7 @@ protected:
 
 	//set in child constructor
 	//TODO:remember if you can set in child header
+	UPROPERTY(BlueprintReadWrite)
 	EspellType spellType = EspellType::null;
 
 public:	

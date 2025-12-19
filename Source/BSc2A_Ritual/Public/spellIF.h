@@ -20,13 +20,13 @@ enum class EspellType : uint8
     //stop leakSource leak
 	leak UMETA(DisplayName = "Leak"),
     //board up flooding room
-	boardUp UMETA(DisplayName = "Board Up")
+	boardUp UMETA(DisplayName = "Board Up"),
     //
-
+    harvest UMETA(DisplayName = "Harvest"),
     //
-
+    tree UMETA(DisplayName = "Tree"),
     //
-
+    deposit  UMETA(DisplayName = "Deposit")
     //
 
     //
