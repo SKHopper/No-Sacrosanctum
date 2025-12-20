@@ -2,6 +2,7 @@
 
 
 #include "floodSource.h"
+#include "streamBPComponent.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -56,6 +57,7 @@ void AfloodSource::beginLeak() {
 
 	isLeaking = true;
 	mesh->SetVisibility(true);
+	floodStream->start();
 	parentBody->changeLeakRate(leakRate);
 }
 
@@ -63,6 +65,7 @@ void AfloodSource::endLeak() {
 
 	isLeaking = false;
 	mesh->SetVisibility(false);
+	floodStream->end();
 	parentBody->changeLeakRate(-leakRate);
 	queueRandomBegin();
 }

@@ -9,6 +9,7 @@
 #include "floodLeak.generated.h"
 
 class UBoxComponent;
+class UstreamBPComponent;
 
 UCLASS()
 /*
@@ -33,13 +34,25 @@ public:
 
 protected:
 
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UstreamBPComponent* floodStreamLeft;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UstreamBPComponent* floodStreamRight;
+
 	//stop this leaking, queue next
 	UFUNCTION(BlueprintCallable)
 	void endLeak();
 
+	UPROPERTY(BlueprintReadOnly)
+	USceneComponent* root;
 	//player visible object
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* mesh;
+	UStaticMeshComponent* leftMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* rightMesh;
 	//for interact trace
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* collider;

@@ -9,6 +9,7 @@
 #include "floodSource.generated.h"
 
 class UBoxComponent;
+class UstreamBPComponent;
 
 UCLASS()
 /*
@@ -32,6 +33,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UstreamBPComponent* floodStream;
+
 
 public:	
 	// Called every frame

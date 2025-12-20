@@ -2,6 +2,7 @@
 
 
 #include "floodLeak.h"
+#include "streamBPComponent.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -12,24 +13,32 @@ AfloodLeak::AfloodLeak()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	mesh->SetupAttachment(RootComponent);
+	root = CreateDefaultSubobject<USceneComponent>(TEXT("Root Comp"));
+	SetRootComponent(root);
 
 	collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	collider->SetupAttachment(RootComponent);
+	leftMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Left"));
+	leftMesh->SetupAttachment(RootComponent);
+	rightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Right"));
+	rightMesh->SetupAttachment(RootComponent);
 
-	if (mesh) {
-		mesh->SetVisibility(false);
-	}
 }
 
 void AfloodLeak::beginLeaking() {
+	
 	leakHeight = FMath::RandRange(minSpawnHeight, maxSpawnHeight);
 	SetActorLocation(GetActorLocation() + FVector(0, 0, leakHeight));
 
+	FVector lV = floodStreamLeft->GetComponentLocation();
+	FVector rV = floodStreamRight->GetComponentLocation();
+	floodStreamLeft->SetWorldLocation({ lV.X, lV.Z, GetActorLocation().Z });
+	floodStreamRight->SetWorldLocation({ rV.X, rV.Z, GetActorLocation().Z });
+
 	canLeak = true;
 	isUpdating = false;
-	mesh->SetVisibility(true);
+	leftMesh->SetVisibility(true);
+	rightMesh->SetVisibility(true);
 	updateLeak();
 
 }
@@ -67,6 +76,13 @@ void AfloodLeak::BeginPlay()
 void AfloodLeak::changeLeak(double index, double delta) {
 	parentBodies[index]->changeLeakRate(delta);
 	bodyLeakRates[index] = bodyLeakRates[index] + delta;
+	UstreamBPComponent* stream = index ? floodStreamRight : floodStreamLeft;
+	if (bodyLeakRates[index] > 0) {
+		stream->start();
+	}
+	else {
+		stream->end();
+	}
 }
 
 void AfloodLeak::setNoLeak() {
@@ -193,10 +209,16 @@ void AfloodLeak::getSpelled() {
 
 void AfloodLeak::endLeak() {
 
+	SetActorLocation(GetActorLocation() - FVector(0, 0, leakHeight));
+	leakHeight = 0;
+
+	leftMesh->SetVisibility(false);
+	rightMesh->SetVisibility(false);
+
 	canLeak = false;
 	isUpdating = false;
 	hasUpdatedThisTick = false;
-	mesh->SetVisibility(false);
 	updateLeak();
+	
 	queueRandomBegin();
 }
