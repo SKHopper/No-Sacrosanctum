@@ -32,6 +32,6 @@ void AfloodWorldGameState::BeginPlay() {
 
 void AfloodWorldGameState::bodyFilled() {
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("GAME FAILED"));
+	gameFailed(true);
 
 }

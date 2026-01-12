@@ -32,7 +32,11 @@ public:
 
 	//override spell toggle functionality
 	
-	virtual void getSpelled() {};
+	virtual void getSpelled() { onSpelled(); };
+
+	//bp override
+	UFUNCTION(BlueprintImplementableEvent)
+	void onSpelled();
 
 protected:
 	// Called when the game starts or when spawned

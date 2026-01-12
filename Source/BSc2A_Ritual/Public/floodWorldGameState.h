@@ -27,6 +27,9 @@ protected:
 	//an un-boarded up body has overflowed
 	virtual void bodyFilled();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void gameFailed(bool failByFlood);
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AfloodBoard> floodBoardClass;
 };
