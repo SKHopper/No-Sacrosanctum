@@ -32,7 +32,7 @@ public:
 
 	//override spell toggle functionality
 	
-	virtual void getSpelled() { onSpelled(); };
+	virtual void getSpelled() {};
 
 	//bp override
 	UFUNCTION(BlueprintImplementableEvent)

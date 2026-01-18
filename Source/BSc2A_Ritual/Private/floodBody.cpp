@@ -25,8 +25,7 @@ void AfloodBody::BeginPlay()
 
 	startLocation = GetActorLocation();
 	board = Cast<IfloodIF>(boardActor);
-	if (boardActor)GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("1"));
-	if (board)GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("2"));
+	//if (board)GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("2"));
 
 	
 }

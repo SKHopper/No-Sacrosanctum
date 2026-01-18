@@ -28,7 +28,10 @@ bool Aspellable::trySpell(EspellType key) {
 	bool worked = key == spellType;
 
 	if (worked) {
+		//C++
 		getSpelled();
+		//UE5BP
+		onSpelled();
 	}
 
 	return worked;
