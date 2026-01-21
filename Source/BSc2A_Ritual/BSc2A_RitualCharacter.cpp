@@ -92,22 +92,25 @@ void ABSc2A_RitualCharacter::toggleSpellMenu() {
 
 void ABSc2A_RitualCharacter::MoveInput(const FInputActionValue& Value)
 {
-	// get the Vector2D move axis
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	if (not cutsceneControlsOnly) {
+		// get the Vector2D move axis
+		FVector2D MovementVector = Value.Get<FVector2D>();
 
-	// pass the axis values to the move input
-	DoMove(MovementVector.X, MovementVector.Y);
-
+		// pass the axis values to the move input
+		DoMove(MovementVector.X, MovementVector.Y);
+	}
 }
 
 void ABSc2A_RitualCharacter::LookInput(const FInputActionValue& Value)
 {
-	// get the Vector2D look axis
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	// pass the axis values to the aim input
-	DoAim(LookAxisVector.X, LookAxisVector.Y);
+	if (not cutsceneControlsOnly) {
+		// get the Vector2D look axis
+		FVector2D LookAxisVector = Value.Get<FVector2D>();
 
+		// pass the axis values to the aim input
+		DoAim(LookAxisVector.X, LookAxisVector.Y);
+	}
 }
 
 void ABSc2A_RitualCharacter::DoAim(float Yaw, float Pitch)

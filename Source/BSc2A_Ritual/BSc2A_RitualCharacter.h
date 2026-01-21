@@ -41,6 +41,10 @@ class ABSc2A_RitualCharacter : public ACharacter, public IspellIF
 
 protected:
 
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool cutsceneControlsOnly;
+
 	//are we currently casting spells
 	UPROPERTY(BlueprintReadOnly, Category = "spellcasting")
 	bool inSpellMenu = false;
