@@ -21,15 +21,12 @@ enum class EspellType : uint8
 	leak UMETA(DisplayName = "Leak"),
     //board up flooding room
 	boardUp UMETA(DisplayName = "Board Up"),
-    //
+    //get food value from harvestable
     harvest UMETA(DisplayName = "Harvest"),
-    //
-    tree UMETA(DisplayName = "Tree"),
-    //
-    deposit  UMETA(DisplayName = "Deposit")
-    //
-
-    //
+    //give food value to npc
+    deposit  UMETA(DisplayName = "Deposit"),
+    //end game
+    suicide UMETA(DisplayName = "Escape")
 };
 
 
